@@ -14,6 +14,9 @@ COPY --from=clone /app/open-healthcare-prebuilt-services/miscellaneous/fhir-serv
 # Set the working directory to the FHIR server implementation
 WORKDIR /home/ballerina/open-healthcare-prebuilt-services/miscellaneous/fhir-server
 
+# Copy Config.toml
+COPY Config.toml .
+
 # Ensure script is executable and permissions are correct
 RUN chmod +x start-server.sh && \
     chown -R 10014:0 /home/ballerina && \
