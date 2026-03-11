@@ -8,23 +8,28 @@ FROM ballerina/ballerina:2201.12.3
 
 USER root
 
-# Copy the cloned repository from the previous stage
-COPY --from=clone /app/open-healthcare-prebuilt-services/miscellaneous/fhir-server /home/ballerina/open-healthcare-prebuilt-services/miscellaneous/fhir-server
+# Copy the cloned repository from the previous stage to a custom path (to bypass base image VOLUME restrictions)
+COPY --from=clone /app/open-healthcare-prebuilt-services/miscellaneous/fhir-server /app/fhir-server
 
-# Set the working directory to the FHIR server implementation
-WORKDIR /home/ballerina/open-healthcare-prebuilt-services/miscellaneous/fhir-server
+# Set the working directory to the new path
+WORKDIR /app/fhir-server
 
 # Copy Config.toml
 COPY Config.toml .
 
-# Ensure script is executable and permissions are correct
-RUN chmod +x start-server.sh && \
-    chown -R 10014:0 /home/ballerina && \
-    chmod -R g=u /home/ballerina
+# Ensure script is executable and set up a custom HOME with unrestricted permissions
+RUN mkdir -p /tmp/.ballerina logs data && \
+    chmod +x start-server.sh && \
+    chown -R 10014:0 /app && \
+    chmod -R 777 /app && \
+    chown -R 10014:0 /tmp/.ballerina && \
+    chmod -R 777 /tmp/.ballerina
 
 # Switch to non-root user
 USER 10014
-ENV HOME=/home/ballerina
+
+# Choreo rootfs is read-only, but /tmp is writable
+ENV HOME=/tmp
 
 EXPOSE 9090
 
