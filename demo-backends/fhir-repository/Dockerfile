@@ -16,10 +16,11 @@ WORKDIR /home/ballerina/open-healthcare-prebuilt-services/miscellaneous/fhir-ser
 
 # Ensure script is executable and permissions are correct
 RUN chmod +x start-server.sh && \
-    chown -R 10500:10500 /home/ballerina
+    chown -R 10014:0 /home/ballerina && \
+    chmod -R g=u /home/ballerina
 
 # Switch to non-root user
-USER 10500
+USER 10014
 ENV HOME=/home/ballerina
 
 EXPOSE 9090
