@@ -4,7 +4,7 @@
 dbType = "h2"
 # Database connection URL
 # For H2: 
-dbUrl = "jdbc:h2:./data/fhir-db"
+dbUrl = "jdbc:h2:/tmp/fhir-server/data/fhir-db"
 dbUser = "sa"
 dbPassword = ""
 # For PostgreSQL:
