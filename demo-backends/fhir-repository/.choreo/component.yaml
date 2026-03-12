@@ -1,0 +1,12 @@
+schemaVersion: 1.1
+endpoints:
+  - name: international401-fhir-api
+    displayName: international401 FHIR API
+    service:
+      basePath: /fhir/r4
+      port: 9090
+    type: REST
+    networkVisibilities:
+      - Project
+      - Public
+    schemaFilePath: r4-oas-definition.yaml
