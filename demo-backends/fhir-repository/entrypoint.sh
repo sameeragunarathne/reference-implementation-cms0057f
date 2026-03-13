@@ -1,12 +1,9 @@
 #!/bin/sh
 
 # Choreo rootfs is read-only, but /tmp is writable.
-# We copy the app to /tmp at runtime to allow it to create logs, data, and target folders.
-echo "Copying fhir-server to /tmp/fhir-server..."
-cp -r /app/fhir-server /tmp/fhir-server
+# We navigate to /tmp to allow the app to create any necessary temporal files.
+echo "Navigating to /tmp..."
+cd /tmp
 
-echo "Navigating to /tmp/fhir-server..."
-cd /tmp/fhir-server
-
-echo "Starting FHIR server with bal run..."
-bal run --offline
+echo "Starting FHIR server with java -jar..."
+java -jar /app/fhir-server.jar --b7a.config.file=/app/Config.toml
